@@ -1,0 +1,5 @@
+# 공통 의존성. 버전 고정은 학습 환경(Python·CUDA)이 확정된 뒤 진행한다 (Project_Rule.md 7절).
+# torch / torchvision은 환경마다 설치 명령이 달라 README의 설치 절차를 따른다.
+ultralytics   # AGPL-3.0, YOLO26n 학습·추론
+pyyaml        # MIT, 설정 파일 로딩
+pytest        # MIT, 테스트
