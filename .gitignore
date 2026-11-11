@@ -1,0 +1,43 @@
+# ── 데이터 (Project_Rule.md 6.5절) ──
+# 루트 data 폴더만 무시한다. "data/"로 쓰면 src/data/ 코드까지 빠지므로 반드시 이 형식을 유지한다.
+/data/*
+!/data/README.md
+
+# 영상, 압축 원본
+*.mp4
+*.avi
+*.mov
+*.zip
+*.tar
+*.7z
+
+# ── 학습 산출물 ──
+runs/
+*.pt
+*.pth
+*.onnx
+*.engine
+
+# ── 비밀 정보 ──
+.env
+
+# ── 개인 지침 (커밋 금지) ──
+CLAUDE.local.md
+command.md
+
+# ── Python ──
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.egg-info/
+
+# ── 노트북 ──
+.ipynb_checkpoints/
+
+# ── 편집기, OS ──
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store
