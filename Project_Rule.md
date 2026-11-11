@@ -111,9 +111,9 @@ Contributions 그래프에는 기본 브랜치(main)에 들어간 커밋 중 커
 
 | 담당 | git user.name | 역할 | 주 작업 디렉토리 |
 |---|---|---|---|
-| 이유섭 | `hoseop1357` | 데이터 수집·변환, 라벨링 기준서, 데이터셋 버전 관리, 증강 설정, 직접 촬영 계획 | `src/data/`, `configs/data*.yaml`, `data/README.md`, `docs/labeling-guide.md`, `docs/data-sources.md` |
-| 최민규 | <!-- TODO --> | YOLO26n 학습, 하이퍼파라미터 실험, mAP 평가, 오탐 분석, 모델 export, 학습 환경 | `src/train/`, `configs/train*.yaml`, `docs/experiments.md` |
-| 이시준 | <!-- TODO --> | 연관·추적·판정 로직, 이벤트 단위 평가, 얼굴 블러, 데모 앱 | `src/logic/`, `src/utils/`, `configs/logic.yaml`, `eval/`, `app/` |
+| 최민규 | `최민규 GitHub 계정` | 데이터 수집·변환, 라벨링 기준서, 데이터셋 버전 관리, 증강 설정, 직접 촬영 계획 | `src/data/`, `configs/data*.yaml`, `data/README.md`, `docs/labeling-guide.md`, `docs/data-sources.md` |
+| 이유섭 | `hoseop1357` | YOLO26n 학습, 하이퍼파라미터 실험, mAP 평가, 오탐 분석, 모델 export, 학습 환경 | `src/train/`, `configs/train*.yaml`, `docs/experiments.md` |
+| 이시준 | `이시준 GitHub 계정` | 연관·추적·판정 로직, 이벤트 단위 평가, 얼굴 블러, 데모 앱 | `src/logic/`, `src/utils/`, `configs/logic.yaml`, `eval/`, `app/` |
 
 테스트는 대상 모듈의 담당자가 작성한다(`tests/test_<모듈>.py`).
 
@@ -124,9 +124,9 @@ Contributions 그래프에는 기본 브랜치(main)에 들어간 커밋 중 커
 
 | 파일 | 담당 | 필수 리뷰어 | 이유 |
 |---|---|---|---|
-| `docs/labeling-guide.md` | 이유섭 | 이시준 | 사람 박스의 하단 기준이 연관 로직(발 위치)의 입력이다 |
-| `configs/data*.yaml`, 분할 스크립트 | 이유섭 | 최민규 | 학습·평가 분할이 mAP 신뢰도를 좌우한다 |
-| `src/logic/association.py` | 이시준 | 이유섭 | 라벨링 기준과 같은 정의를 쓰는지 확인한다 |
+| `docs/labeling-guide.md` | 최민규 | 이시준 | 사람 박스의 하단 기준이 연관 로직(발 위치)의 입력이다 |
+| `configs/data*.yaml`, 분할 스크립트 | 최민규 | 이유섭 | 학습·평가 분할이 mAP 신뢰도를 좌우한다 |
+| `src/logic/association.py` | 이시준 | 최민규 | 라벨링 기준과 같은 정의를 쓰는지 확인한다 |
 데이터 담당의 작업도 반드시 코드와 문서 커밋으로 남긴다(변환 스크립트, 통계 스크립트, 기준서). 데이터 파일 자체는 커밋하지 않는다.
 
 ---
@@ -256,8 +256,9 @@ AI Hub 공개 페이지 기준으로 확인된 사항은 아래와 같다(2026-1
 - 증강은 Ultralytics 기본값을 쓰되 상하 반전(`flipud`)은 0으로 둔다. 판정이 박스의 상하 위치 관계에 의존하기 때문이다.
 - 해상도 실험(`imgsz` 640/960/1280)은 `exp/` 브랜치에서 하고, 결과를 속도와 함께 기록한다.
 - 학습 설정은 `configs/train*.yaml`로 관리하고, 실행 명령은 스크립트(`src/train/train.py`)로 감싼다.
-- 실행 환경: <!-- TODO: GPU 서버 / Colab 여부, GPU 종류, Python 버전 기입 -->
-  - 확인된 개인 PC: 이유섭 PC는 GeForce MX450이며(2026-11-09 확인) 학습용으로는 부족하다. 데이터 변환·검수·추론 테스트 용도로만 쓴다.
+- 실행 환경: 학습 담당(이유섭) 노트북, NVIDIA GeForce MX450 (VRAM 2GB), Python 3.11 (2026-11-11 팀 결정)
+  - VRAM이 작으므로 `imgsz` 640, 작은 `batch`(4 이하)로 학습한다. 960·1280 해상도 실험은 메모리가 허용할 때만 시도하고, 실패도 `docs/experiments.md`에 기록한다.
+  - epoch 수와 학습 데이터 양은 스모크 학습으로 속도를 잰 뒤 정한다.
   - `requirements.txt`의 버전 고정은 학습 환경의 Python·CUDA 버전이 정해진 뒤 확정한다. `torch`는 환경별로 설치 명령이 달라 README에 따로 적는다.
 
 ---
@@ -355,7 +356,7 @@ kickboard-violation-detector/
 줄일 때는 v0.6(헬멧)을 먼저 빼고, 그다음 v0.5를 v0.4에 합친다.
 **매 회차 세 명 모두 자기 이름의 PR을 최소 1개 병합한다.** 기여도가 회차마다 평가되기 때문이다.
 
-| 버전 | 목표 | 이유섭 | 최민규 | 이시준 |
+| 버전 | 목표 | 최민규 (데이터) | 이유섭 (모델) | 이시준 (로직·앱) |
 |---|---|---|---|---|
 | v0.1 | 저장소 골격, 브랜치 보호, AI Hub 신청, 샘플 구조 분석, 라벨링 기준서 초안 | 데이터 출처 문서, AI Hub 분석 스크립트, 라벨링 기준서 | 저장소 골격, 스모크 테스트, 학습 환경 확정 | `configs/logic.yaml`, `RiderAssociation` 데이터 구조 초안, 기준서 리뷰 |
 | v0.2 | YOLO 변환, person 자동 라벨, 2클래스 베이스라인, 직접 촬영 시작 | 변환·분할 스크립트, 자동 라벨, 촬영 계획 | 1차 학습, mAP 기록 | 연관 함수와 단위 테스트(가짜 박스) |
