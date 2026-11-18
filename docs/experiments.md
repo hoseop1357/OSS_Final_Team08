@@ -1,7 +1,19 @@
 # 실험 기록
 
 모든 학습·평가 실행을 **실패한 것까지** 기록한다 (Project_Rule.md 8절).
-실행 폴더의 `run_meta.json`에 커밋, 설정, 데이터 버전, 환경이 자동으로 남으므로 그 값을 옮겨 적는다.
+실행 폴더의 `run_meta.json`에 커밋, 설정, 데이터 버전, 환경, 상태(running / finished / failed)가 자동으로 남으므로 그 값을 옮겨 적는다.
+
+## 기록 절차
+
+```bash
+python -m src.train.train --config configs/<설정>.yaml [--data <data.yaml>]          # 1. 학습
+python -m src.train.evaluate --weights runs/train/<실행폴더>/weights/best.pt \
+       --data <data.yaml> --split test                                               # 2. 평가 → eval_test.json
+python -m src.train.summarize runs/train/<실행폴더>                                  # 3. 요약 표 출력
+```
+
+3번 출력을 아래 양식의 결과 칸에 붙이고, 해석과 다음 할 일을 직접 적은 뒤 `docs(train):` 커밋으로 남긴다.
+학습 중에는 데이터 폴더를 옮기거나 이름을 바꾸지 않는다.
 
 ## 기록 양식
 
