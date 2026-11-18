@@ -116,3 +116,36 @@ def test_class_order_mismatch_rejected(tmp_path):
 def test_class_check_skipped_when_expected_none(tmp_path):
     p = _write_data_yaml(tmp_path, {0: "person"})
     check_class_names(p, None)  # 예외가 없어야 한다
+
+
+# ── src/train/train.py (학습 없이 확인 가능한 부분) ──
+
+from datetime import datetime  # noqa: E402
+
+from src.train.train import build_parser, main, make_run_name  # noqa: E402
+
+
+def test_run_name_contains_version_and_imgsz():
+    cfg = parse_config(_cfg())
+    assert make_run_name(cfg, datetime(2026, 11, 18, 15, 30)) == "20261118-1530_t_dsv0_640"
+
+
+def test_dry_run_smoke_config_passes():
+    assert main(["--config", str(REPO_ROOT / "configs" / "train_smoke.yaml"), "--dry-run"]) == 0
+
+
+def test_missing_data_yaml_blocks_training(tmp_path):
+    with pytest.raises(SystemExit, match="data.yaml"):
+        main(["--config", str(REPO_ROOT / "configs" / "train.yaml"),
+              "--data", str(tmp_path / "missing.yaml"), "--dry-run"])
+
+
+def test_wrong_class_order_blocks_training(tmp_path):
+    data = _write_data_yaml(tmp_path, {0: "person", 1: "kickboard"})
+    with pytest.raises(ConfigError, match="클래스 순서"):
+        main(["--config", str(REPO_ROOT / "configs" / "train.yaml"), "--data", str(data), "--dry-run"])
+
+
+def test_overrides_parsed():
+    args = build_parser().parse_args(["--config", "x.yaml", "--epochs", "3", "--batch", "-1"])
+    assert args.epochs == 3 and args.batch == -1
