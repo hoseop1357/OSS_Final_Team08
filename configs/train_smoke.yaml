@@ -1,0 +1,23 @@
+# 스모크 학습: 환경과 학습 파이프라인이 끝까지 도는지만 확인한다.
+# coco8(8장)은 Ultralytics가 자동으로 내려받는 예제 데이터라 클래스 검사는 하지 않는다.
+
+experiment:
+  name: smoke
+  data_version: coco8
+  expected_names: null
+
+model: yolo26n.pt
+data: coco8.yaml
+
+train:
+  epochs: 1
+  imgsz: 640
+  batch: 4
+  workers: 2
+  device: 0
+  seed: 0
+  flipud: 0.0
+  plots: false
+
+output:
+  project: runs/train
