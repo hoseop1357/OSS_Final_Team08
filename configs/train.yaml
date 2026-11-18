@@ -1,0 +1,24 @@
+# 1차 학습 기본 설정: kickboard / person 2클래스 (Project_Rule.md 7절)
+# 노트북(MX450, VRAM 2GB) 기준값. 4070 PC에서는 batch: -1(자동)로 바꿔 쓴다.
+
+experiment:
+  name: baseline
+  data_version: v0                      # 학습에 쓴 데이터셋 버전 (기록용)
+  expected_names: [kickboard, person]   # data.yaml 클래스 순서 검증
+
+model: yolo26n.pt                       # COCO 사전학습 가중치 (처음부터 학습: yolo26n.yaml)
+data: configs/data.yaml                 # 데이터 담당 소유 파일. 실행 시 --data로 바꿀 수 있음
+
+train:
+  epochs: 50
+  imgsz: 640
+  batch: 4
+  workers: 2
+  device: 0
+  amp: true
+  patience: 15
+  seed: 0
+  flipud: 0.0                           # 필수: 판정이 박스의 상하 관계에 의존
+
+output:
+  project: runs/train                   # .gitignore 대상
