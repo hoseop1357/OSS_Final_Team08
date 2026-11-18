@@ -70,6 +70,31 @@ def environment_info() -> dict[str, Any]:
     return info
 
 
+def build_meta(cfg: TrainConfig, config_path: Path, overrides: dict[str, Any], run_name: str) -> dict[str, Any]:
+    """실행 기록(run_meta.json)의 내용을 만든다. 시작 시점의 status는 'running'이다."""
+    return {
+        "run_name": run_name,
+        "status": "running",
+        "config": str(config_path),
+        "overrides": overrides,
+        "commit": git_commit(),
+        "model": cfg.model,
+        "data": cfg.data,
+        "data_version": cfg.data_version,
+        "train": cfg.train,
+        "environment": environment_info(),
+        "started_at": datetime.now().isoformat(timespec="seconds"),
+    }
+
+
+def write_meta(save_dir: Path, meta: dict[str, Any]) -> Path:
+    """실행 폴더에 run_meta.json을 쓰고 경로를 반환한다."""
+    save_dir.mkdir(parents=True, exist_ok=True)
+    path = save_dir / "run_meta.json"
+    path.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
+    return path
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(description="YOLO26n kickboard/person 학습")
     p.add_argument("--config", type=Path, required=True, help="configs/train*.yaml 경로")
@@ -102,25 +127,31 @@ def main(argv: list[str] | None = None) -> int:
 
     from ultralytics import YOLO  # 무거운 import는 실제 학습 때만
 
+    meta = build_meta(cfg, args.config, overrides, run_name)
+    state: dict[str, Path] = {}
+
+    def on_start(trainer: Any) -> None:
+        # 학습이 실제로 시작되는 시점에 기록을 먼저 남겨, 중간에 멈춘 실행도 추적할 수 있게 한다.
+        state["save_dir"] = Path(trainer.save_dir)
+        write_meta(state["save_dir"], meta)
+
     # Ultralytics는 상대 project 경로 앞에 runs/<task>/를 덧붙이므로 절대 경로로 넘긴다.
     project_dir = Path(cfg.project).resolve()
     model = YOLO(cfg.model)
-    model.train(data=cfg.data, project=str(project_dir), name=run_name, **cfg.train)
-    save_dir = Path(model.trainer.save_dir)
+    model.add_callback("on_pretrain_routine_start", on_start)
+    try:
+        model.train(data=cfg.data, project=str(project_dir), name=run_name, **cfg.train)
+    except BaseException as exc:  # KeyboardInterrupt 포함: 중단 사유를 기록하고 다시 올린다
+        if "save_dir" in state:
+            meta.update(status="failed", error=f"{type(exc).__name__}: {exc}",
+                        ended_at=datetime.now().isoformat(timespec="seconds"))
+            write_meta(state["save_dir"], meta)
+            print(f"[train] 실패 기록: {state['save_dir'] / 'run_meta.json'}")
+        raise
 
-    meta = {
-        "run_name": run_name,
-        "config": str(args.config),
-        "overrides": overrides,
-        "commit": git_commit(),
-        "model": cfg.model,
-        "data": cfg.data,
-        "data_version": cfg.data_version,
-        "train": cfg.train,
-        "environment": environment_info(),
-        "finished_at": datetime.now().isoformat(timespec="seconds"),
-    }
-    (save_dir / "run_meta.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
+    save_dir = Path(model.trainer.save_dir)
+    meta.update(status="finished", ended_at=datetime.now().isoformat(timespec="seconds"))
+    write_meta(save_dir, meta)
     print(f"[train] 완료: {save_dir}")
     return 0
 
