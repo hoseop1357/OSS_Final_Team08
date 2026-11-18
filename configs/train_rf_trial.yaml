@@ -8,7 +8,7 @@ experiment:
   expected_names: [e-scooters rider]    # 이 데이터의 클래스 (2클래스 아님)
 
 model: yolo26n.pt
-data: C:/Users/jamim/Desktop/project_data/robotflow/data.yaml   # 다른 컴퓨터에서는 --data로 지정
+data: C:/Users/jamim/Desktop/project_data/robotflow/raw/data.yaml   # 다른 컴퓨터에서는 --data로 지정
 
 train:
   epochs: 3                             # 1단계: 속도 측정. 본 학습은 --epochs로 지정
