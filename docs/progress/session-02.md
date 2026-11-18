@@ -9,7 +9,9 @@ YOLO26n 학습 코드 작성과 실제 데이터 시험 학습, 연관 로직의
 - 이유섭 (모델):
   - PR #5 학습 코드: `configs/train.yaml`, `configs/train_smoke.yaml`, 설정 검증(`src/train/config.py`: 필수 키, flipud=0, 클래스 순서), 학습 실행(`src/train/train.py`), 테스트, 실험 기록 양식과 EXP-000 스모크 결과
   - PR #7, #8 리뷰·승인
-  - 진행 중(이번 회차에 PR 미병합): `exp/rf-single-class` EXP-001 Roboflow 1클래스 시험 학습 기록, `feat/train-eval` 실행 기록 보강·평가·요약 스크립트
+  - PR #9 EXP-001 Roboflow 1클래스 시험 학습 설정과 결과 기록
+  - PR #10 실행 기록 보강(시작 시 run_meta.json, 종료 상태 기록), 평가 스크립트(`src/train/evaluate.py`), 요약 스크립트(`src/train/summarize.py`), 테스트
+  - PR #11 회차 01·02 진행 기록
 - 최민규 (데이터):
   - PR #8 `src/data/roboflow_autolabel.py`: Roboflow 묶음 박스를 kickboard/person 초안으로 나누고 재검토 대상을 분류, 단위 테스트
   - PR #6 리뷰·승인
@@ -20,11 +22,11 @@ YOLO26n 학습 코드 작성과 실제 데이터 시험 학습, 연관 로직의
 
 ## 결과 및 수치
 
-- 이번 회차 main 병합: PR 4개 (#5, #6, #7, #8), 세 명 모두 자기 PR 1개 이상 병합
-- main pytest: 61개 통과
+- 이번 회차 main 병합: PR 7개 (#5 ~ #11), 세 명 모두 자기 PR 1개 이상 병합
+- main pytest: 71개 통과
 - 학습 환경: 이유섭 노트북 MX450 2GB, Python 3.11, torch 2.14.1+cu126, Ultralytics 8.4.210. YOLO26n(`yolo26n.pt`) 로드와 학습 확인
 - EXP-000 (coco8 스모크): 학습·검증·저장 정상
-- EXP-001 (Roboflow electric scooters images v10, 1클래스 묶음 박스, `exp/rf-single-class` 브랜치에 기록)
+- EXP-001 (Roboflow electric scooters images v10, 1클래스 묶음 박스, PR #9로 `docs/experiments.md`에 기록)
   - 3 epoch: test mAP50 0.927, mAP50-95 0.711
   - 10 epoch 계획 중 6 epoch에서 중단(학습 중 데이터 폴더 이동). 6 epoch best.pt test: P 0.902, R 0.924, mAP50 0.929, mAP50-95 0.737
   - 해석: 파이프라인은 실제 데이터에서 정상 수렴. 묶음 박스라 사람 수를 셀 수 없고, 세워 둔 킥보드를 탑승으로 잡는 사례가 나와 2클래스 분리와 정차 필터가 필요함을 확인. 프레임 단위 분할 가능성이 있어 점수는 성능 근거로 쓰지 않음
@@ -36,6 +38,6 @@ YOLO26n 학습 코드 작성과 실제 데이터 시험 학습, 연관 로직의
 ## 다음 회차 목표
 
 - 최민규: 킥보드 박스 재라벨링으로 2클래스 데이터셋 v0 생성(`configs/data.yaml`, 생성 기록), 라벨링 기준서
-- 이유섭: EXP-001·평가 스크립트 PR 병합, 데이터셋 검사 스크립트, v0로 2클래스 1차 학습(가능하면 4070 PC)
+- 이유섭: 데이터셋 검사 스크립트, v0로 2클래스 1차 학습(가능하면 4070 PC)
 - 이시준: 탑승자 연관 함수(발 위치·겹침 조건)와 경계 사례 테스트, AI Hub 2인 탑승 영상으로 추적 시험
 - 팀: 1단계 탐지 클래스(2개)와 `docs/scenarios.md`의 4클래스 정리, 공유 드라이브 위치(`data/README.md`) 확정
