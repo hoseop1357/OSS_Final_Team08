@@ -1,0 +1,25 @@
+# EXP-001 시험 학습: Roboflow electric scooters images v10 (1클래스 묶음 박스)
+# 목적: 실제 데이터에서 학습 파이프라인, 노트북(MX450) 속도·메모리, 수렴 여부 확인.
+# 박스가 킥보드와 탑승자를 함께 감싸므로 프로젝트 모델(kickboard/person)로는 쓰지 않는다.
+
+experiment:
+  name: rf-trial
+  data_version: rf-escooter-v10
+  expected_names: [e-scooters rider]    # 이 데이터의 클래스 (2클래스 아님)
+
+model: yolo26n.pt
+data: C:/Users/jamim/Desktop/project_data/robotflow/raw/data.yaml   # 다른 컴퓨터에서는 --data로 지정
+
+train:
+  epochs: 3                             # 1단계: 속도 측정. 본 학습은 --epochs로 지정
+  imgsz: 640
+  batch: 4
+  workers: 2
+  device: 0
+  amp: true
+  patience: 15
+  seed: 0
+  flipud: 0.0
+
+output:
+  project: runs/train
