@@ -1,0 +1,25 @@
+# 시험 학습: AI Hub 묶음 박스(킥보드+탑승자)로 탑승 인원 상태를 직접 분류한다.
+# 프로젝트의 정식 모델(kickboard/person 2클래스)이 아니며 kickboard 라벨로 쓰지 않는다.
+# 코드 28=single_rider, 36=multi_rider, 29=pushed. 데이터는 저장소 밖 로컬에만 둔다.
+
+experiment:
+  name: rider-trial
+  data_version: rider-trial-v0
+  expected_names: [single_rider, multi_rider, pushed]
+
+model: yolo26n.pt
+data: C:/kickboard_data/rider_trial_v0/data.yaml   # 다른 컴퓨터에서는 --data로 지정
+
+train:
+  epochs: 60
+  imgsz: 960                            # 원본 1920x1080에서 박스 폭 중앙값이 약 60px이라 640보다 키움
+  batch: 12
+  workers: 6
+  device: 0
+  amp: true
+  patience: 15
+  seed: 0
+  flipud: 0.0
+
+output:
+  project: runs/train
