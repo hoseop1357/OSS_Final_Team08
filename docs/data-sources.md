@@ -162,6 +162,20 @@ python -m src.data.roboflow_autolabel --src data/aihub/review/batch01 --out data
 # batch01_draft/{auto,review}를 로컬 CVAT에 Ultralytics YOLO 형식으로 올려 docs/labeling-guide.md 기준으로 검수
 ```
 
+**batch01 초안 결과 (2026-11-25, COCO 사전학습 `yolo26n.pt`, CPU)**
+
+| 항목 | 값 |
+| --- | --- |
+| 이미지 | 150 (auto 75 / review 75) |
+| 초안 박스 | kickboard 169, person 317 |
+| 재검토 사유 | 신뢰도 0.5 미만 사람 63장, 탑승자 미검출 22장, 다중 탑승 후보 7장 |
+| **다중 탑승 검출** | **AI Hub 정답 96장 중 7장(약 7%)만 초안에서 2인 이상으로 잡힘** |
+
+- 2인 탑승의 뒷사람은 앞사람에 가려져 COCO 사전학습 모델로는 거의 잡히지 않는다(EXP-001 메모의 '뒷사람 누락'을 150장으로 확인).
+- 따라서 초안을 그대로 쓰지 않고 **150장 전부 사람이 검수**한다. 특히 다중 탑승 96장은 `docs/labeling-guide.md` 3.1절(가려진 뒷사람도 발까지 전신 박스)대로 뒷사람을 추가한다.
+- 검수 도구: 로컬 CVAT은 Docker(관리자 권한·WSL2·재부팅)가 필요해 학교 실습 PC에서는 쓸 수 없다. 개인 PC(최민규)에 설치해 검수한다.
+- 참고: Windows 새 PC에서 `import torch`가 `WinError 126 (shm.dll)`로 실패하면 Microsoft Visual C++ 재배포 패키지(x64)를 설치한 뒤 터미널을 새로 열면 된다(재부팅 없이 해결됨).
+
 ## 3. AI Hub 058. 생활도로 객체인식 자율주행 데이터 (보류)
 
 - 차량에 단 전·후·좌·우 카메라(어안렌즈), 열화상, 라이다 데이터
