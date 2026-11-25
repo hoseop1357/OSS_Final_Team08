@@ -9,3 +9,7 @@ data:
   sample_events: app/sample_data/events.json
   cameras: app/config/cameras.yaml
   demo_snapshot_dir: outputs/demo_snapshots # 시연용 가짜 캡처를 만들어 두는 곳 (Git 제외)
+  reviews: outputs/reviews.json            # 운영자 확인/오탐 기록 (Git 제외)
+
+stats:
+  range_days: 7            # 목록·통계의 기본 기간(선택한 날짜까지 며칠)

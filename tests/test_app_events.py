@@ -130,7 +130,7 @@ def test_app_runs_and_shows_detail_for_selected_camera():
 
     at = AppTest.from_file(str(ROOT / "app" / "streamlit_app.py"), default_timeout=60).run()
     assert not at.exception
-    assert [m.value for m in at.metric] == ["3건", "5건"]  # 샘플 데이터의 마지막 날(11-25): 오탐 1건 제외
+    assert [m.value for m in at.metric][:2] == ["3건", "25건"]  # 샘플 마지막 날(11-25) 3건(오탐 1건 제외), 누적 25건
     at.selectbox[0].select("cam-01").run()
     assert not at.exception
     texts = " ".join(m.value for m in at.markdown)

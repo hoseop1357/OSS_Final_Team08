@@ -1,0 +1,10 @@
+# 대시보드 테마 (streamlit run을 저장소 루트에서 실행할 때 적용)
+[theme]
+base = "light"
+primaryColor = "#d62828"           # 위반 빨강을 강조색으로
+backgroundColor = "#ffffff"
+secondaryBackgroundColor = "#f4f5f7"
+textColor = "#1f2328"
+
+[browser]
+gatherUsageStats = false
