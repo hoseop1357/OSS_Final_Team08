@@ -18,7 +18,8 @@ MARGIN = 0.10
 KB = Detection(KICKBOARD, (100, 300, 300, 400), conf=0.9, track_id=7)
 FRONT = Detection(PERSON, (150, 100, 210, 390), conf=0.9)   # 발 (180, 390)
 BACK = Detection(PERSON, (200, 150, 240, 380), conf=0.9)    # 가려진 뒷사람: 작은 박스, 발 (220, 380)
-CFG = LogicConfig(conf_thres=0.25, foot_margin_ratio=MARGIN, window_sec=1.0, violation_ratio=0.6, min_move_px=40)
+CFG = LogicConfig(conf_thres=0.25, foot_margin_ratio=MARGIN, window_sec=1.0, violation_ratio=0.6,
+                  min_move_ratio=0.3, max_gap_sec=0.5)
 
 
 def person(box):

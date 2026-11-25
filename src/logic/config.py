@@ -17,7 +17,8 @@ class LogicConfig:
     foot_margin_ratio: float
     window_sec: float
     violation_ratio: float
-    min_move_px: float
+    min_move_ratio: float
+    max_gap_sec: float
 
 
 def load_logic_config(path: Path | str = DEFAULT_PATH) -> LogicConfig:
