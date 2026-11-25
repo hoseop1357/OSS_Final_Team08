@@ -1,0 +1,10 @@
+# 시연 전용 베타: 묶음 박스(킥보드+탑승자) 모델과 COCO 사람 모델을 합친다.
+# 정식 2클래스 모델이 아니며 결과를 성능 근거로 쓰지 않는다 (EXP-002 참고).
+mode: bundle_beta
+conf: 0.1
+imgsz: 960
+device: 0
+tracker: bytetrack.yaml
+bundle_classes: [single_rider, multi_rider, pushed]   # 위치만 쓰고 클래스로 인원을 판단하지 않는다
+person_weights: yolo26n.pt                            # COCO 사전학습
+kickboard_lower_ratio: 0.5                            # 묶음 박스 아래쪽 이 비율을 임시 킥보드 영역으로 쓴다
