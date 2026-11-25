@@ -4,4 +4,7 @@ ultralytics   # AGPL-3.0, YOLO26n 학습·추론
 pyyaml        # MIT, 설정 파일 로딩
 opencv-python # Apache-2.0, 박스 표시·머리 모자이크·캡처 저장 (ultralytics도 설치하지만 직접 import하므로 명시)
 numpy         # BSD-3-Clause, 이미지 배열
+streamlit     # Apache-2.0, 운영자 대시보드 (app/)
+folium        # MIT, 대시보드 지도 (OpenStreetMap 바탕)
+streamlit-folium  # MIT, folium 지도를 Streamlit에 넣고 클릭 좌표 받기
 pytest        # MIT, 테스트
