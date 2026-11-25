@@ -1,0 +1,11 @@
+# 대시보드 화면 설정 (app/streamlit_app.py)
+
+map:
+  zoom: 14                 # 처음 지도 확대 단계
+  click_match_m: 80        # 지도 클릭 좌표와 이 거리(m) 안의 카메라를 선택한 것으로 본다
+
+data:
+  events: outputs/events.json              # 실제 판정 결과. 없으면 아래 샘플을 쓴다 (저장소 루트 기준 경로)
+  sample_events: app/sample_data/events.json
+  cameras: app/config/cameras.yaml
+  demo_snapshot_dir: outputs/demo_snapshots # 시연용 가짜 캡처를 만들어 두는 곳 (Git 제외)
