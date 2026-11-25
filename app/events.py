@@ -123,9 +123,50 @@ def active_camera_ids(events: list[Event], day: date) -> set[str]:
     return {e.camera_id for e in events_on(events, day)}
 
 
-def events_for_camera(events: list[Event], camera_id: str, day: date) -> list[Event]:
-    """그날 해당 카메라의 집계 대상 이벤트를 시각 순으로."""
-    return [e for e in events_on(events, day) if e.camera_id == camera_id]
+def events_for_camera(events: list[Event], camera_id: str, day: date, include_false_positive: bool = False) -> list[Event]:
+    """그날 해당 카메라의 이벤트. 미확인을 먼저, 그다음 시각 순. 오탐은 include_false_positive일 때만 맨 뒤에."""
+    picked = [e for e in events if e.camera_id == camera_id and e.occurred_at.date() == day
+              and (e.counted or include_false_positive)]
+    order = {"unreviewed": 0, "confirmed": 1, FALSE_POSITIVE: 2}
+    return sorted(picked, key=lambda e: (order.get(e.status, 1), e.occurred_at))
+
+
+def filter_events(
+    events: list[Event], start: date, end: date,
+    camera_ids: Optional[set[str]] = None, statuses: Optional[set[str]] = None,
+) -> list[Event]:
+    """기간(양 끝 포함)·카메라·상태로 거른 이벤트를 최신 순으로. None이면 그 조건은 거르지 않는다."""
+    return sorted(
+        (e for e in events
+         if start <= e.occurred_at.date() <= end
+         and (camera_ids is None or e.camera_id in camera_ids)
+         and (statuses is None or e.status in statuses)),
+        key=lambda e: e.occurred_at, reverse=True,
+    )
+
+
+def hourly_counts(events: list[Event], day: date) -> list[int]:
+    """그날 시간대(0~23시)별 집계 대상 건수."""
+    counts = [0] * 24
+    for e in events_on(events, day):
+        counts[e.occurred_at.hour] += 1
+    return counts
+
+
+def daily_counts(events: list[Event], start: date, end: date) -> dict[date, int]:
+    """기간 안 날짜별 집계 대상 건수(이벤트가 없는 날도 0으로 넣는다)."""
+    days = {date.fromordinal(o): 0 for o in range(start.toordinal(), end.toordinal() + 1)}
+    for e in events:
+        d = e.occurred_at.date()
+        if e.counted and d in days:
+            days[d] += 1
+    return days
+
+
+def camera_ranking(events: list[Event], start: date, end: date) -> list[tuple[str, int]]:
+    """기간 안 카메라별 집계 대상 건수를 많은 순으로."""
+    c = Counter(e.camera_id for e in events if e.counted and start <= e.occurred_at.date() <= end)
+    return sorted(c.items(), key=lambda kv: (-kv[1], kv[0]))
 
 
 def latest_event_day(events: list[Event]) -> Optional[date]:
