@@ -3,6 +3,7 @@
 사람(person)이 어느 킥보드(kickboard)에 타고 있는지 짝지은 결과를 RiderAssociation에 담는다.
 연관 기준은 사람 박스 하단 중앙(발 위치)이 좌우·하단으로 넓힌 킥보드 박스 안에 있는지이다.
 후보 킥보드가 여러 대면 사람 박스와의 겹침 면적이 가장 큰 한 대에만 배정한다(발 위치 우선, 겹침은 보조).
+겹침이 같으면 발 위치와 킥보드 박스 중심이 가장 가까운 쪽에 배정한다.
 박스 형식은 (x1, y1, x2, y2) 픽셀 좌표이며 원점은 이미지 왼쪽 위다.
 
 모든 함수는 모델 없이 동작하는 순수 함수이고, 임계값은 configs/logic.yaml(LogicConfig)에서 받는다.
@@ -14,7 +15,9 @@ from collections.abc import Iterable, Sequence
 from dataclasses import dataclass, field
 from typing import Optional
 
-from src.logic.box_utils import expand_for_foot, foot_point, intersection_area, point_in_box
+from src.logic.box_utils import (
+    box_center, expand_for_foot, foot_point, intersection_area, point_in_box, squared_distance,
+)
 from src.logic.config import LogicConfig
 
 Box = tuple[float, float, float, float]
@@ -73,7 +76,8 @@ def associate_riders(
 
     - 킥보드 1대당 RiderAssociation 1개를 kickboards 순서대로 만든다(탑승자 0명이어도 만든다).
     - 사람의 발 위치가 expand_for_foot(킥보드 박스, foot_margin_ratio) 안에 있으면 그 킥보드의 후보다.
-    - 후보가 여러 대면 사람 박스와의 겹침 면적이 가장 큰 한 대에만 배정한다. 겹침이 같으면 앞 순서의 킥보드.
+    - 후보가 여러 대면 사람 박스와의 겹침 면적이 가장 큰 한 대에만 배정한다.
+      겹침이 같으면 발 위치와 킥보드 박스 중심이 가장 가까운 쪽, 거리까지 같으면 앞 순서의 킥보드.
     - 알려진 한계: 확장 영역은 상단을 넓히지 않으므로 발 위치가 킥보드 박스 상단보다 위면 놓친다.
     """
     results = [
@@ -87,7 +91,14 @@ def associate_riders(
         candidates = [i for i, region in enumerate(regions) if point_in_box(foot, region)]
         if not candidates:
             continue
-        best = max(candidates, key=lambda i: intersection_area(p.box, kickboards[i].box))
+        # max는 키가 같으면 먼저 나온 후보를 고른다 → 거리까지 같으면 앞 순서의 킥보드.
+        best = max(
+            candidates,
+            key=lambda i: (
+                intersection_area(p.box, kickboards[i].box),
+                -squared_distance(foot, box_center(kickboards[i].box)),
+            ),
+        )
         results[best].rider_boxes.append(p.box)
     return results
 

@@ -1,6 +1,6 @@
 """box_utils 단위 테스트. 모델 없이 가짜 박스만 사용한다."""
 from src.logic.box_utils import (
-    box_h, box_w, expand_for_foot, foot_point, intersection_area, point_in_box,
+    box_center, box_h, box_w, expand_for_foot, foot_point, intersection_area, point_in_box, squared_distance,
 )
 
 KB = (100, 300, 300, 400)  # 너비 200, 높이 100
@@ -49,3 +49,11 @@ def test_point_in_box_includes_edges():
 
 def test_point_outside_box():
     assert not point_in_box((99, 350), KB) and not point_in_box((200, 401), KB)
+
+
+def test_box_center():
+    assert box_center(KB) == (200, 350)
+
+
+def test_squared_distance():
+    assert squared_distance((0, 0), (3, 4)) == 25 and squared_distance((1, 1), (1, 1)) == 0

@@ -19,6 +19,16 @@ def foot_point(person_box: Box) -> tuple[float, float]:
     return ((person_box[0] + person_box[2]) / 2, person_box[3])
 
 
+def box_center(b: Box) -> tuple[float, float]:
+    """박스 중심점."""
+    return ((b[0] + b[2]) / 2, (b[1] + b[3]) / 2)
+
+
+def squared_distance(p: tuple[float, float], q: tuple[float, float]) -> float:
+    """두 점 사이 거리의 제곱. 크기 비교만 할 때 제곱근을 생략하려고 쓴다."""
+    return (p[0] - q[0]) ** 2 + (p[1] - q[1]) ** 2
+
+
 def intersection_area(a: Box, b: Box) -> float:
     """두 박스가 겹치는 면적. 겹치지 않으면 0."""
     w = min(a[2], b[2]) - max(a[0], b[0])

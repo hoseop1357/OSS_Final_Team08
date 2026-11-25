@@ -103,9 +103,20 @@ def test_person_between_two_kickboards_goes_to_larger_overlap_only():
     assert a1.n_riders == 0 and a2.rider_boxes == [p.box]
 
 
-def test_overlap_tie_goes_to_first_kickboard():
+def test_overlap_tie_goes_to_kickboard_closer_to_foot():
+    # kb2는 KB보다 아래로 20px 길다. 겹침은 둘 다 50x95로 같지만,
+    # 발 (290, 395)에서 중심까지 거리는 kb2 (380, 360)가 KB (200, 350)보다 가깝다 → kb2에만 배정
+    kb2 = Detection(KICKBOARD, (280, 300, 480, 420), track_id=8)
+    p = person((250, 100, 330, 395))
+    assert intersection_area(p.box, KB.box) == intersection_area(p.box, kb2.box)
+    a1, a2 = associate_riders([KB, kb2], [p], MARGIN)
+    assert a1.n_riders == 0 and a2.rider_boxes == [p.box]
+
+
+def test_overlap_and_distance_tie_goes_to_first_kickboard():
+    # 겹침도, 발에서 중심까지 거리도 같으면(좌우 대칭) 앞 순서의 킥보드
     kb2 = Detection(KICKBOARD, (280, 300, 480, 400), track_id=8)
-    p = person((250, 100, 330, 395))  # 겹침 폭 50px로 같음
+    p = person((250, 100, 330, 395))
     a1, a2 = associate_riders([KB, kb2], [p], MARGIN)
     assert a1.n_riders == 1 and a2.n_riders == 0
 
