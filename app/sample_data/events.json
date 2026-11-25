@@ -1,0 +1,48 @@
+{
+  "note": "시연용 가짜 위반 이벤트. 실제 영상·실제 킥보드·실제 사람과 관계없다. scooter_number는 모의 번호다.",
+  "is_mock": true,
+  "events": [
+    {
+      "event_id": "evt-0001", "type": "multi_rider", "occurred_at": "2026-11-24T08:41:05+09:00", "time_source": "demo",
+      "camera_id": "cam-02", "kickboard_track_id": 3, "scooter_number": "DEMO-1007", "rider_count": 2, "confidence": 0.8,
+      "start_frame": 120, "end_frame": 260, "snapshot_frame": 180,
+      "snapshot_kickboard_box": [230, 230, 390, 330], "snapshot_rider_boxes": [[255, 40, 315, 320], [305, 70, 355, 315]],
+      "snapshot": null, "status": "unreviewed"
+    },
+    {
+      "event_id": "evt-0002", "type": "multi_rider", "occurred_at": "2026-11-24T18:12:47+09:00", "time_source": "demo",
+      "camera_id": "cam-05", "kickboard_track_id": 11, "scooter_number": "DEMO-1033", "rider_count": 2, "confidence": 0.9,
+      "start_frame": 40, "end_frame": 175, "snapshot_frame": 90,
+      "snapshot_kickboard_box": [120, 240, 290, 340], "snapshot_rider_boxes": [[150, 50, 210, 330], [200, 80, 255, 325]],
+      "snapshot": null, "status": "unreviewed"
+    },
+    {
+      "event_id": "evt-0003", "type": "multi_rider", "occurred_at": "2026-11-25T09:05:12+09:00", "time_source": "demo",
+      "camera_id": "cam-01", "kickboard_track_id": 7, "scooter_number": "DEMO-1042", "rider_count": 2, "confidence": 1.0,
+      "start_frame": 72, "end_frame": 252, "snapshot_frame": 130,
+      "snapshot_kickboard_box": [250, 235, 420, 335], "snapshot_rider_boxes": [[280, 45, 340, 325], [330, 75, 385, 320]],
+      "snapshot": null, "status": "unreviewed"
+    },
+    {
+      "event_id": "evt-0004", "type": "multi_rider", "occurred_at": "2026-11-25T12:33:40+09:00", "time_source": "demo",
+      "camera_id": "cam-01", "kickboard_track_id": 15, "scooter_number": "DEMO-1108", "rider_count": 3, "confidence": 0.85,
+      "start_frame": 300, "end_frame": 410, "snapshot_frame": 350,
+      "snapshot_kickboard_box": [200, 240, 400, 340], "snapshot_rider_boxes": [[215, 50, 270, 330], [260, 70, 315, 325], [310, 90, 360, 322]],
+      "snapshot": null, "status": "unreviewed"
+    },
+    {
+      "event_id": "evt-0005", "type": "multi_rider", "occurred_at": "2026-11-25T14:03:21+09:00", "time_source": "demo",
+      "camera_id": "cam-03", "kickboard_track_id": 4, "scooter_number": "DEMO-1019", "rider_count": 2, "confidence": 0.7,
+      "start_frame": 15, "end_frame": 140, "snapshot_frame": 60,
+      "snapshot_kickboard_box": [330, 245, 500, 345], "snapshot_rider_boxes": [[360, 55, 420, 335], [410, 85, 465, 330]],
+      "snapshot": null, "status": "unreviewed"
+    },
+    {
+      "event_id": "evt-0006", "type": "multi_rider", "occurred_at": "2026-11-25T17:48:09+09:00", "time_source": "demo",
+      "camera_id": "cam-06", "kickboard_track_id": 22, "scooter_number": "DEMO-1077", "rider_count": 2, "confidence": 0.75,
+      "start_frame": 500, "end_frame": 620, "snapshot_frame": 540,
+      "snapshot_kickboard_box": [150, 235, 320, 335], "snapshot_rider_boxes": [[180, 45, 240, 325], [230, 75, 285, 320]],
+      "snapshot": null, "status": "false_positive"
+    }
+  ]
+}

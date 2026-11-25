@@ -1,0 +1,17 @@
+# 시연용 가상 계약 지점(카메라 위치). 실제 운영사나 실제 설치 위치가 아니다.
+# 일반 영상에는 GPS가 없으므로 킥보드가 아니라 "카메라 위치"를 지도에 표시한다.
+# location_source: "configured"(실제로 확인한 좌표) / "default"(세종시 임의 좌표, 화면에 '임의 위치'로 표시)
+
+default_location:       # 좌표를 모를 때 쓰는 세종시 임의 좌표
+  lat: 36.480
+  lon: 127.289
+
+cameras:
+  - {id: cam-01, name: 시연 지점 1, lat: 36.4800, lon: 127.2890, location_source: default}
+  - {id: cam-02, name: 시연 지점 2, lat: 36.4862, lon: 127.2815, location_source: default}
+  - {id: cam-03, name: 시연 지점 3, lat: 36.4921, lon: 127.2948, location_source: default}
+  - {id: cam-04, name: 시연 지점 4, lat: 36.4757, lon: 127.3012, location_source: default}
+  - {id: cam-05, name: 시연 지점 5, lat: 36.4705, lon: 127.2851, location_source: default}
+  - {id: cam-06, name: 시연 지점 6, lat: 36.4838, lon: 127.2731, location_source: default}
+  - {id: cam-07, name: 시연 지점 7, lat: 36.4969, lon: 127.2822, location_source: default}
+  - {id: cam-08, name: 시연 지점 8, lat: 36.4782, lon: 127.2689, location_source: default}
