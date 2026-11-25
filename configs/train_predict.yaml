@@ -1,0 +1,6 @@
+# 영상 추론 설정: 2클래스(kickboard, person) 정식 모델용
+mode: two_class
+conf: 0.1                 # ByteTrack이 낮은 점수 박스도 쓰므로 낮게 둔다. 최종 하한은 logic.yaml의 conf_thres
+imgsz: 640
+device: 0
+tracker: bytetrack.yaml

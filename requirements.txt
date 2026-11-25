@@ -4,4 +4,5 @@ ultralytics   # AGPL-3.0, YOLO26n 학습·추론
 pyyaml        # MIT, 설정 파일 로딩
 opencv-python # Apache-2.0, 박스 표시·머리 모자이크·캡처 저장 (ultralytics도 설치하지만 직접 import하므로 명시)
 numpy         # BSD-3-Clause, 이미지 배열
+lap           # BSD-2-Clause, ByteTrack 추적의 짝짓기 계산
 pytest        # MIT, 테스트
