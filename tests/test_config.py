@@ -11,7 +11,8 @@ def test_default_config_has_positive_values():
     assert cfg.foot_margin_ratio > 0
     assert cfg.window_sec > 0
     assert 0 < cfg.violation_ratio <= 1
-    assert cfg.min_move_px >= 0
+    assert cfg.min_move_ratio >= 0
+    assert cfg.max_gap_sec >= 0
 
 
 def test_missing_key_raises_key_error():
